@@ -95,7 +95,7 @@ const [setPageTv] = useState ([])
       <>
         <MainContainer>
         
-      <h2>Popular Tv</h2>
+      <h2>Popular Tv Shows</h2>
 
         <PopularTvContainer>
           
@@ -107,7 +107,7 @@ const [setPageTv] = useState ([])
             ))}
         </PopularTvContainer>
 
-        <h2>Top Rated Tv</h2>
+        <h2>Top Rated Tv Shows</h2>
      
      <TopRatedTvContainer>
          {topratedtv.map((topratedtv) =>

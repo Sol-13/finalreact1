@@ -6,6 +6,9 @@ import { Tv } from '@styled-icons/feather/Tv/Tv';
 import { Search } from '@styled-icons/feather/Search/Search';
 import Movies from './components/Movies';
 import TvShows from './components/TvShows';
+import SearchData from './components/SearchData';
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+
 
 
 const Body = styled.body`
@@ -28,7 +31,8 @@ p {
   width: 30px;
   padding: 30px;
 
-/****Preguntar como darle color al seleccionar los iconos:****
+
+ /*Resolver el color de los iconos*/ 
 p { color: rgb(33, 150, 243);
 }
 `
@@ -146,25 +150,37 @@ const App = () => {
   }
 
   return (
-    <>
-      <Body />
+    <Router>
+      <>
+      {/*solucionar*/}
+      <div><Body /></div> 
 
       <NavContainer>
         <ul>
-          <p><Home /></p>
-          <p><Video id="movie" onClick={handleClickPage} Movies /></p>
-          <p><Tv id="tv" onclick={handleClickPage} TvShows /></p>
-          <p><Search /></p>
+          <p> <Link to="/"><Home/></Link></p>
+          <p> <Link to= "/movies"><Video id="movie" onClick={handleClickPage} Movies /></Link></p>
+          <p> <Link to="/tv"><Tv id="tv" onclick={handleClickPage} TvShows /></Link></p>
+          <p>  <Link to=""><Search onclick={handleClickPage} SearchData/></Link></p>
         </ul>
-
       </NavContainer>
       
-      {page === 'movies' && <Movies/>}
-      {page === 'tv' && <TvShows/>}
+      {/*Se hace asi?*/}
+      <Switch> {/*Muestra uno por vez */}
+      <Route exact path="/" render={()=> App}></Route  >
+      <Route exact path="/movies" component={Movies}></Route>
+      <Route exact path="/tv" component={TvShows}></Route>
+      </Switch>
+       
+      {page === 'movies' && <Movies/> /*solucionar*/   } 
+      {page === 'tv' && <TvShows/>  /*solucionar*/     } 
      
+
+
       <DivSuperior>
+        /*HACER*/
         <h1>Foto</h1>
       </DivSuperior>
+
 
       {openModal &&
         <Modal>
@@ -205,6 +221,7 @@ const App = () => {
       </MainContainer>
 
     </>
+    </Router>
   );
 }
 
