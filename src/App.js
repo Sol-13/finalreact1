@@ -4,9 +4,11 @@ import { Home } from '@styled-icons/feather/Home/Home';
 import { Video } from '@styled-icons/feather/Video/Video';
 import { Tv } from '@styled-icons/feather/Tv/Tv';
 import { Search } from '@styled-icons/feather/Search/Search';
+import Movies from './components/Movies';
+import TvShows from './components/TvShows';
 
 
-const body = styled.body`
+const Body = styled.body`
   font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
 `
 
@@ -28,15 +30,8 @@ p {
 
 /****Preguntar como darle color al seleccionar los iconos:****
 p { color: rgb(33, 150, 243);
-}*/
-
 }
 `
-const ModalSearch = styled.div`
-
-`
-
-
 
 const DivSuperior = styled.div`
 position: relative;
@@ -51,7 +46,6 @@ background: #141414;
 margin-left: 150px;
 
 h2{
-
   margin-left: 20px; 
   font-size: 32px;
   font-weight: 300;
@@ -59,12 +53,18 @@ h2{
 }
 `
 
-
 const MovieContainer = styled.section`
 display:flex;
 justify-content: space-between;
 flex-wrap: wrap;
 `
+
+const TvContainer = styled.section`
+display:flex;
+justify-content: space-between;
+flex-wrap: wrap;
+`
+
 const Movie = styled.article`
 margin:20px;
 width: 180px;
@@ -74,6 +74,17 @@ img {
   height: auto;
 }
 `
+
+const Tv1 = styled.article`
+margin:20px;
+width: 180px;
+
+img {
+  width:100%;
+  height: auto;
+}
+`
+
 const Modal = styled.div`
 height: auto;
 width: 700px;
@@ -99,11 +110,19 @@ const App = () => {
   const [chosenMovie, setChosenMovie] = useState(null)
   const [genres, setGenres] = useState([])
   const [genresChosenMovie, setGenresChosenMovie] = useState([])
+  const [tvList, setTvList] = useState([])
+  const [page, setPage] = useState([])
+
 
   useEffect(() => {
-    fetch(`https://api.themoviedb.org/3/movie/popular?api_key=30dab27f60b1e072cb74daed58002f0a`)
+    fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=30dab27f60b1e072cb74daed58002f0a`)
       .then(res => res.json())
       .then(data => setMovieList(data.results))
+
+    fetch(`https://api.themoviedb.org/3/trending/tv/week?api_key=30dab27f60b1e072cb74daed58002f0a`)
+      .then(res => res.json())
+      .then(data => setTvList(data.results))
+
   }, [])
 
   const handleClick = movie => {
@@ -117,35 +136,41 @@ const App = () => {
     }))
   }
 
-  /****Consultar: Ya no me funciona la X para cerrar el modal!****/
+
   const handleClickModal = () => {
     setOpenModal(!openModal);
   }
 
-
-
-
+  const handleClickPage = e => {
+    setPage(e.target.id)
+  }
 
   return (
     <>
+      <Body />
+
       <NavContainer>
         <ul>
           <p><Home /></p>
-
-          <p><Video /></p>
-
-          <p><Tv /></p>
-
+          <p><Video id="movie" onClick={handleClickPage} Movies /></p>
+          <p><Tv id="tv" onclick={handleClickPage} TvShows /></p>
           <p><Search /></p>
-
         </ul>
+
       </NavContainer>
+      
+      {page === 'movies' && <Movies/>}
+      {page === 'tv' && <TvShows/>}
+     
+      <DivSuperior>
+        <h1>Foto</h1>
+      </DivSuperior>
 
       {openModal &&
         <Modal>
           <button onClick={handleClickModal}>X</button>
           <h3>{chosenMovie.title}</h3>
-          <img src={`https://image.tmdb.org/t/p/w500${chosenMovie.poster_path}`} />
+          <img src={`https://image.tmdb.org/t/p/w500${chosenMovie.poster_path}`} alt="modal con imagen de pelicula" />
           <p>Summary: {chosenMovie.overview}</p>
           <p>Date: {new Date(chosenMovie.release_date).toLocaleDateString('es')}</p>
           <p>Genres: {genresChosenMovie.map(genres => genres.name).join(", ")}</p>
@@ -153,25 +178,34 @@ const App = () => {
       }
 
 
-      <DivSuperior>
-        <h1>Foto</h1>
-      </DivSuperior>
-
-
       <MainContainer>
-        <h2> Peliculas que son tendencia </h2>
+
+        <h2> Trending Movies </h2>
+
         <MovieContainer>
           {movieList.map((movie) =>
             (<Movie key={movie.id} onClick={() => handleClick(movie)}>
-              <p>{movie.title}</p>
-              <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
+              <h3>{movie.title}</h3>
+              <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt="imagenes de peliculas" />
             </Movie>
             ))}
         </MovieContainer>
+
+        <h2>Trending TV Shows</h2>
+
+        <TvContainer>
+          {tvList.map((tv) =>
+            (<Tv1 key={tv.id} onClick={() => handleClick(tv)}>
+              <h3>{tv.title}</h3>
+              <img src={`https://image.tmdb.org/t/p/w500${tv.poster_path}`} alt="imagenes de series" />
+            </Tv1>
+            ))}
+        </TvContainer>
+
       </MainContainer>
+
     </>
   );
 }
-
 
 export default App;
