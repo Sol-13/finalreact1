@@ -63,6 +63,7 @@ img {
 `
 
 
+
 const TvShows = () => {
 
 const [populartv, setPopularTv] = useState ([])
@@ -95,47 +96,54 @@ const [setPageTv] = useState ([])
       <>
         <MainContainer>
         
-      <h2>Popular Tv Shows</h2>
+       <h2>Popular Tv Shows</h2>
 
         <PopularTvContainer>
           
           {populartv.map((populartv) =>
+            
             (<PopularTv key={populartv.id} onClick={() => handleClickTv(populartv)}>
               <h3>{populartv.title}</h3>
               <img src={`https://image.tmdb.org/t/p/w500${populartv.poster_path}`} alt = "imagenes de peliculas populares"/>
             </PopularTv>
             ))}
-        </PopularTvContainer>
 
-        <h2>Top Rated Tv Shows</h2>
+         </PopularTvContainer>
+
+       <h2>Top Rated Tv Shows</h2>
      
-     <TopRatedTvContainer>
+        <TopRatedTvContainer>
+
          {topratedtv.map((topratedtv) =>
+           
            (<TopTv key={topratedtv.id} onClick={() => handleClickTv(topratedtv)}>
              <h3>{topratedtv.title}</h3>
              <img src={`https://image.tmdb.org/t/p/w500${topratedtv.poster_path}`} alt = "imagenes de series con mejores criticas"/>
            </TopTv>
            ))}
-       </TopRatedTvContainer>
+
+        </TopRatedTvContainer>
      
      
      <h2>Currently Airing TV Shows</h2>
     
      <CurrentlyTVContainer>
+       
          {currentlyTv.map((currentlyTv) =>
+           
            (<Up key={currentlyTv.id} onClick={() => handleClickTv(currentlyTv)}>
              <h3>{currentlyTv.title}</h3>
              <img src={`https://image.tmdb.org/t/p/w500${currentlyTv.poster_path}`} alt = "imagenes de series en el aire"/>
            </Up>
            ))}
+
        </CurrentlyTVContainer>
     
-    
       </MainContainer>
-</>
-     
-    )
-}
+
+  </>
+     )
+     }
 
 export default TvShows;
 

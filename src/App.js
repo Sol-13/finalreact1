@@ -6,6 +6,7 @@ import { Tv } from '@styled-icons/feather/Tv/Tv';
 import { Search } from '@styled-icons/feather/Search/Search';
 import Movies from './components/Movies';
 import TvShows from './components/TvShows';
+import Home1 from './components/Home1';
 import SearchData from './components/SearchData';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 
@@ -37,118 +38,24 @@ p { color: rgb(33, 150, 243);
 }
 `
 
-const DivSuperior = styled.div`
+/*const DivSuperior = styled.div`
 position: relative;
 display: block;
 height: 0;
 padding-bottom: 30%;
 `
-
-const MainContainer = styled.main`
-color: #fff;
-background: #141414;
-margin-left: 150px;
-
-h2{
-  margin-left: 20px; 
-  font-size: 32px;
-  font-weight: 300;
-  color: rgb(220, 221, 222);
-}
-`
-
-const MovieContainer = styled.section`
-display:flex;
-justify-content: space-between;
-flex-wrap: wrap;
-`
-
-const TvContainer = styled.section`
-display:flex;
-justify-content: space-between;
-flex-wrap: wrap;
-`
-
-const Movie = styled.article`
-margin:20px;
-width: 180px;
-
-img {
-  width:100%;
-  height: auto;
-}
-`
-
-const Tv1 = styled.article`
-margin:20px;
-width: 180px;
-
-img {
-  width:100%;
-  height: auto;
-}
-`
-
-const Modal = styled.div`
-height: auto;
-width: 700px;
-border: 1 px solid #ccc;
-padding: 20px;
-border-radius: 20px;
-position: absolute;
-right: 30%;
-color: #fff;
-background-color: #141414;
-
-img {
-  width: 180px;
-  height: auto;
-}
-
-`
+*/
 
 const App = () => {
 
-  const [movieList, setMovieList] = useState([])
-  const [openModal, setOpenModal] = useState(false)
-  const [chosenMovie, setChosenMovie] = useState(null)
-  const [genres, setGenres] = useState([])
-  const [genresChosenMovie, setGenresChosenMovie] = useState([])
-  const [tvList, setTvList] = useState([])
   const [page, setPage] = useState([])
-
-
-  useEffect(() => {
-    fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=30dab27f60b1e072cb74daed58002f0a`)
-      .then(res => res.json())
-      .then(data => setMovieList(data.results))
-
-    fetch(`https://api.themoviedb.org/3/trending/tv/week?api_key=30dab27f60b1e072cb74daed58002f0a`)
-      .then(res => res.json())
-      .then(data => setTvList(data.results))
-
-  }, [])
-
-  const handleClick = movie => {
-    setChosenMovie(movie)
-    fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=30dab27f60b1e072cb74daed58002f0a`)
-      .then(res => res.json())
-      .then(data => setGenres(data.genres))
-    handleClickModal()
-    setGenresChosenMovie(genres.filter(genero => {
-      return chosenMovie.genre_ids.includes(genero.id)
-    }))
-  }
-
-
-  const handleClickModal = () => {
-    setOpenModal(!openModal);
-  }
+  
 
   const handleClickPage = e => {
     setPage(e.target.id)
   }
 
+ 
   return (
     <Router>
       <>
@@ -160,69 +67,23 @@ const App = () => {
           <p> <Link to="/"><Home/></Link></p>
           <p> <Link to= "/movies"><Video id="movie" onClick={handleClickPage} Movies /></Link></p>
           <p> <Link to="/tv"><Tv id="tv" onclick={handleClickPage} TvShows /></Link></p>
-          <p>  <Link to=""><Search onclick={handleClickPage} SearchData/></Link></p>
+          <p>  <Link to=""> <Search onclick={handleClickPage} SearchData/></Link></p>
         </ul>
       </NavContainer>
       
-      {/*Se hace asi?*/}
-      <Switch> {/*Muestra uno por vez */}
-      <Route exact path="/" render={()=> App}></Route  >
+      
+      <Switch>
+      <Route exact path="/" component={Home1}></Route  >
       <Route exact path="/movies" component={Movies}></Route>
       <Route exact path="/tv" component={TvShows}></Route>
+      <Route exact path="/tv" component={SearchData}></Route>
       </Switch>
-       
-      {page === 'movies' && <Movies/> /*solucionar*/   } 
-      {page === 'tv' && <TvShows/>  /*solucionar*/     } 
+      </>
+</Router>
+    
+     )};
+
+     export default App; 
      
 
 
-      <DivSuperior>
-        /*HACER*/
-        <h1>Foto</h1>
-      </DivSuperior>
-
-
-      {openModal &&
-        <Modal>
-          <button onClick={handleClickModal}>X</button>
-          <h3>{chosenMovie.title}</h3>
-          <img src={`https://image.tmdb.org/t/p/w500${chosenMovie.poster_path}`} alt="modal con imagen de pelicula" />
-          <p>Summary: {chosenMovie.overview}</p>
-          <p>Date: {new Date(chosenMovie.release_date).toLocaleDateString('es')}</p>
-          <p>Genres: {genresChosenMovie.map(genres => genres.name).join(", ")}</p>
-        </Modal>
-      }
-
-
-      <MainContainer>
-
-        <h2> Trending Movies </h2>
-
-        <MovieContainer>
-          {movieList.map((movie) =>
-            (<Movie key={movie.id} onClick={() => handleClick(movie)}>
-              <h3>{movie.title}</h3>
-              <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt="imagenes de peliculas" />
-            </Movie>
-            ))}
-        </MovieContainer>
-
-        <h2>Trending TV Shows</h2>
-
-        <TvContainer>
-          {tvList.map((tv) =>
-            (<Tv1 key={tv.id} onClick={() => handleClick(tv)}>
-              <h3>{tv.title}</h3>
-              <img src={`https://image.tmdb.org/t/p/w500${tv.poster_path}`} alt="imagenes de series" />
-            </Tv1>
-            ))}
-        </TvContainer>
-
-      </MainContainer>
-
-    </>
-    </Router>
-  );
-}
-
-export default App;
