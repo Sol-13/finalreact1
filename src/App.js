@@ -13,7 +13,11 @@ import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 
 
 const Body = styled.body`
-  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+background-color: rgb(35, 39, 42);
+color: rgb(220, 221, 222);
+font-weight: 300;
+margin: 0px;
 `
 
 const NavContainer = styled.nav`
@@ -38,13 +42,6 @@ p { color: rgb(33, 150, 243);
 }
 `
 
-/*const DivSuperior = styled.div`
-position: relative;
-display: block;
-height: 0;
-padding-bottom: 30%;
-`
-*/
 
 const App = () => {
 
@@ -57,10 +54,11 @@ const App = () => {
 
  
   return (
+    <Body>
     <Router>
       <>
-      {/*solucionar*/}
-      <div><Body /></div> 
+     
+     
 
       <NavContainer>
         <ul>
@@ -70,8 +68,7 @@ const App = () => {
           <p>  <Link to=""> <Search onclick={handleClickPage} SearchData/></Link></p>
         </ul>
       </NavContainer>
-      
-      
+    
       <Switch>
       <Route exact path="/" component={Home1}></Route  >
       <Route exact path="/movies" component={Movies}></Route>
@@ -79,8 +76,11 @@ const App = () => {
       <Route exact path="/tv" component={SearchData}></Route>
       </Switch>
       </>
+
+    
 </Router>
     
+</Body>
      )};
 
      export default App; 
