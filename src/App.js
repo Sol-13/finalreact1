@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Home } from '@styled-icons/feather/Home/Home';
 import { Video } from '@styled-icons/feather/Video/Video';
@@ -9,6 +9,7 @@ import TvShows from './components/TvShows';
 import Home1 from './components/Home1';
 import SearchData from './components/SearchData';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+
 
 
 
@@ -46,44 +47,44 @@ p { color: rgb(33, 150, 243);
 const App = () => {
 
   const [page, setPage] = useState([])
-  
+
 
   const handleClickPage = e => {
     setPage(e.target.id)
   }
 
- 
+
   return (
+    
     <Body>
-    <Router>
-      <>
-     
-     
+      <Router>
+        <>
 
-      <NavContainer>
-        <ul>
-          <p> <Link to="/"><Home/></Link></p>
-          <p> <Link to= "/movies"><Video id="movie" onClick={handleClickPage} Movies /></Link></p>
-          <p> <Link to="/tv"><Tv id="tv" onclick={handleClickPage} TvShows /></Link></p>
-          <p>  <Link to=""> <Search onclick={handleClickPage} SearchData/></Link></p>
-        </ul>
-      </NavContainer>
-    
-      <Switch>
-      <Route exact path="/" component={Home1}></Route  >
-      <Route exact path="/movies" component={Movies}></Route>
-      <Route exact path="/tv" component={TvShows}></Route>
-      <Route exact path="/tv" component={SearchData}></Route>
-      </Switch>
-      </>
+          <NavContainer>
+            <ul>
+              <p> <Link to="/"><Home /></Link></p>
+              <p> <Link to="/movies"><Video id="movie" onClick={handleClickPage} Movies /></Link></p>
+              <p> <Link to="/tv"><Tv id="tv" onclick={handleClickPage} TvShows /></Link></p>
+              <p>  <Link to="/search"><Search id="search" onclick={handleClickPage} SearchData /></Link></p>
+            </ul>
+          </NavContainer>
 
-    
-</Router>
-    
-</Body>
-     )};
+          <Switch>
+            <Route exact path="/" component={Home1}></Route>
+            <Route exact path="/movies" component={Movies}></Route>
+            <Route exact path="/tv" component={TvShows}></Route>
+            <Route exact path="/search" component={SearchData}></Route>
+          </Switch>
+        </>
 
-     export default App; 
-     
+
+      </Router>
+
+    </Body>
+  )
+};
+
+export default App;
+
 
 

@@ -106,15 +106,16 @@ img {
 
 `
 
-
 const Movies = () => {
 
 const [popular, setPopular] = useState ([])
 const [toprated, setTopRated] = useState ([])
 const [upcoming, setUpComing] = useState ([])
 const [nowplaying,setNowPlaying] = useState ([])
-const [pageMovie, setPageMovie] = useState ([])
 const [openModal, setOpenModal] = useState(false)
+const [chosenMovie, setChosenMovie] = useState(null)
+const [genres, setGenres] = useState([])
+const [genresChosenMovie, setGenresChosenMovie] = useState([])
 
   useEffect(() => {
 
@@ -137,36 +138,36 @@ const [openModal, setOpenModal] = useState(false)
   }, [])
 
   const handleClickMovie = movie => {
-    setPageMovie(movie)
+    setChosenMovie(movie)
     fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=30dab27f60b1e072cb74daed58002f0a`)
       .then(res => res.json())
-      .then(data => setPageMovie(data.genres))
+      .then(data => setGenres(data.genres))
     handleClickModal()
-    setPageMovie(pageMovie.filter(genero => {
-      return pageMovie.genre_ids.includes(genero.id)
+    setGenresChosenMovie(genres.filter(genero => {
+      return chosenMovie.genre_ids.includes(genero.id)
     }))
+  }
 
-    const handleClickModal = () => {
-      setOpenModal(!openModal);
-    }
+  const handleClickModal = () => {
+    setOpenModal(!openModal);
   }
 
 
 
   return (
-     
-     <>
+ 
+ <>
 
-    {openModal &&
-        <Modal>
-          <button onClick={handleClickMovie}>X</button>
-          <h3>{pageMovie.title}</h3>
-          <img src={`https://image.tmdb.org/t/p/w500${pageMovie.poster_path}`} alt="modal con imagen de pelicula" />
-          <p>Summary: {pageMovie.overview}</p>
-          <p>Date: {new Date(pageMovie.release_date).toLocaleDateString('es')}</p>
-          <p>Genres: {pageMovie.map(genres => genres.name).join(", ")}</p>
-        </Modal>
-    }
+ {openModal &&
+    <Modal>
+      <button onClick={handleClickModal}>X</button>
+      <h3>{chosenMovie.title}</h3>
+      <img src={`https://image.tmdb.org/t/p/w500${chosenMovie.poster_path}`} alt="modal con imagen de pelicula" />
+      <p>Summary: {chosenMovie.overview}</p>
+      <p>Date: {new Date(chosenMovie.release_date).toLocaleDateString('es')}</p>
+      <p>Genres: {genresChosenMovie.map(genres => genres.name).join(", ")}</p>
+    </Modal>
+  }
 
    <MainContainer>
         
@@ -232,4 +233,4 @@ const [openModal, setOpenModal] = useState(false)
     )
 }
 
-export default Movies;
+export default Movies; 

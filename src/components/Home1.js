@@ -62,8 +62,8 @@ img {
   width: 180px;
   height: auto;
 }
-
 `
+
  
 const Home1 = () => {
 
@@ -103,8 +103,9 @@ const Home1 = () => {
  
 
 return (
+  <>
 
-    <>
+    
 {openModal &&
     <Modal>
       <button onClick={handleClickModal}>X</button>
